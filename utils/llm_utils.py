@@ -1,5 +1,9 @@
 import openai
 
+import streamlit as st
+
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+
 def generate_hr_questions(resume_text, job_description):
     prompt = f"""
 You are an HR professional. Given the following resume and job description, generate 3 tailored interview questions:
