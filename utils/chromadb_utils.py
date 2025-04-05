@@ -1,7 +1,8 @@
 import chromadb
 from chromadb.config import Settings
 
-client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory="./chroma_db"))
+client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory=None))  # No persist
+
 
 collection = client.get_or_create_collection("resumes")
 
