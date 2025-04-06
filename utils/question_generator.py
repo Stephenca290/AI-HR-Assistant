@@ -14,7 +14,6 @@ Resume:
 Job Description:
 {job_description}
 
-Return the questions in bullet point format.
 """
 
     model = genai.GenerativeModel("gemini-2.0-flash")
