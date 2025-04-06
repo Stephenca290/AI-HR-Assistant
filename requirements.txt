@@ -1,6 +1,7 @@
-openai
-chromadb
-PyMuPDF
 streamlit
-tqdm
+chromadb
+sentence-transformers
+google-generativeai
+PyPDF2
+python-dotenv
 pysqlite3-binary
