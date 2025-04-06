@@ -1,5 +1,4 @@
 import google.generativeai as genai
-from langchain_google_genai import ChatGoogleGenerativeAI
 
 def generate_hr_questions(resume_text, job_description, api_key):
     genai.configure(api_key=api_key)
@@ -18,7 +17,7 @@ Job Description:
 Return the questions in bullet point format.
 """
 
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3, google_api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.0-flash-001")
     response = model.generate_content(prompt)
 
     return response.text
