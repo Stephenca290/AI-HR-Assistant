@@ -16,7 +16,7 @@ Job Description:
 
 """
 
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-2.0-flash-lite")
     response = model.generate_content(prompt)
 
     return response.text
