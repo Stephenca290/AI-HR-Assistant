@@ -2,6 +2,10 @@ from sentence_transformers import SentenceTransformer
 import chromadb
 from chromadb.config import Settings
 
+import sys
+import pysqlite3
+sys.modules["sqlite3"] = sys.modules["pysqlite3"]
+
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 def create_vector_store(docs, names):
