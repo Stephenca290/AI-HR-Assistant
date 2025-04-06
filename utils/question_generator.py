@@ -1,4 +1,5 @@
 import google.generativeai as genai
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 def generate_hr_questions(resume_text, job_description, api_key):
     genai.configure(api_key=api_key)
