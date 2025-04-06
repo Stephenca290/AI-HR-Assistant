@@ -2,6 +2,8 @@ import streamlit as st
 from utils.pdf_parser import extract_text_from_pdf
 from utils.rag_utils import create_vector_store, query_resume_similarity
 from utils.question_generator import generate_hr_questions
+import os
+os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
 
 st.set_page_config(page_title="AI HR Assistant", layout="wide")
 st.title("🤖 AI HR Assistant")
