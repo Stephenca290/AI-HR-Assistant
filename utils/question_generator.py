@@ -14,6 +14,8 @@ Resume:
 Job Description:
 {job_description}
 
+Only provide the questions as bullet points.
+
 """
 
     model = genai.GenerativeModel("gemini-2.0-flash-lite")
