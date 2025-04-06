@@ -1,32 +1,23 @@
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
-from langchain_google_genai import ChatGoogleGenerativeAI
+import google.generativeai as genai
 
 def generate_hr_questions(resume_text, job_description, api_key):
-    prompt_template = """
-    You are an AI HR assistant. Your job is to generate 5 personalized HR interview questions 
-    based on the applicant's resume and the given job description.
+    genai.configure(api_key=api_key)
 
-    Resume:
-    {resume}
+    prompt = f"""
+You are an AI HR Assistant.
 
-    Job Description:
-    {jd}
+Generate 5 personalized HR interview questions based on the following resume and job description.
 
-    Provide the questions in bullet point format.
-    """
+Resume:
+{resume_text}
 
-    prompt = PromptTemplate(
-        input_variables=["resume", "jd"],
-        template=prompt_template,
-    )
+Job Description:
+{job_description}
 
-    llm = ChatGoogleGenerativeAI(
-        model="models/chat-bison-001",  # Compatible and stable model
-        temperature=0.4,
-        google_api_key=api_key,
-    )
+Return the questions in bullet point format.
+"""
 
-    chain = LLMChain(llm=llm, prompt=prompt)
-    output = chain.run({"resume": resume_text, "jd": job_description})
-    return output
+    model = genai.GenerativeModel("gemini-pro")
+    response = model.generate_content(prompt)
+
+    return response.text
