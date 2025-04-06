@@ -6,3 +6,4 @@ PyPDF2
 python-dotenv
 pysqlite3-binary
 huggingface-hub
+pysqlite3-binary
