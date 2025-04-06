@@ -35,6 +35,9 @@ if st.sidebar.button("Analyze"):
             st.subheader("🎯 HR Interview Questions")
             for name, resume_text in zip(resume_names, resumes_texts):
                 questions = generate_hr_questions(resume_text, jd_text, api_key)
+                if isinstance(questions, str):
+                    questions = questions.strip().split("\n")
+                questions = [q.strip("-• ") for q in questions if q.strip().endswith("?")]
                 st.markdown(f"**{name}**")
                 for q in questions:
                     st.write(f"- {q}")
