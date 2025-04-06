@@ -1,7 +1,13 @@
+# utils/chromadb_utils.py
+
+import sys
+import pysqlite3
+sys.modules["sqlite3"] = sys.modules["pysqlite3"]
+
 import chromadb
 from chromadb.config import Settings
 
-client = chromadb.Client()  # Uses in-memory by default
+client = chromadb.Client()
 
 
 
