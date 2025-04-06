@@ -4,32 +4,39 @@ from utils.rag_utils import create_vector_store, query_resume_similarity
 from utils.question_generator import generate_hr_questions
 import tempfile
 
-st.set_page_config(page_title="AI HR Assistant", layout="wide")
+st.set_page_config(page_title="AI-Powered HR Assistant", layout="wide")
+
 st.title("🤖 AI-Powered HR Assistant")
 
-uploaded_files = st.file_uploader("Upload resumes (PDF only)", type="pdf", accept_multiple_files=True)
-job_description = st.text_area("Enter Job Description")
+st.sidebar.header("Upload Job Description and Resumes")
 
-if st.button("Analyze Resumes"):
-    if not uploaded_files or not job_description:
-        st.warning("Please upload resumes and enter a job description.")
-    else:
+api_key = st.secrets["api_key"]
+
+job_description_file = st.sidebar.file_uploader("Upload Job Description (PDF)", type=["pdf"])
+resume_files = st.sidebar.file_uploader("Upload Resumes (PDF)", type=["pdf"], accept_multiple_files=True)
+
+if st.sidebar.button("Analyze"):
+    if job_description_file and resume_files:
         with st.spinner("Processing..."):
-            resume_texts = []
-            resume_names = []
-            for file in uploaded_files:
-                text = extract_text_from_pdf(file)
-                resume_texts.append(text)
-                resume_names.append(file.name)
+            jd_text = extract_text_from_pdf(job_description_file)
+            resumes_texts = [extract_text_from_pdf(resume) for resume in resume_files]
+            resume_names = [resume.name for resume in resume_files]
 
-            db, index = create_vector_store(resume_texts, resume_names)
-            ranked = query_resume_similarity(db, index, job_description)
+            # Build vector DB
+            create_vector_store([jd_text] + resumes_texts, ["JD"] + resume_names, api_key)
 
-            st.subheader("📊 Ranked Resumes & HR Questions")
-            for name, content, score in ranked:
-                st.markdown(f"### {name} — Similarity Score: {score:.2f}")
-                st.markdown(f"**Resume Extract:**\n\n{content[:400]}...")
-                questions = generate_hr_questions(content)
-                st.markdown("**HR Questions:**")
+            # Similarity scores
+            ranking = query_resume_similarity(jd_text, resumes_texts, resume_names, api_key)
+
+            st.subheader("📊 Resume Ranking")
+            for rank, (name, score) in enumerate(ranking, 1):
+                st.write(f"{rank}. **{name}** - Similarity Score: `{score:.2f}`")
+
+            st.subheader("🎯 HR Interview Questions")
+            for name, resume_text in zip(resume_names, resumes_texts):
+                questions = generate_hr_questions(resume_text, api_key)
+                st.markdown(f"**{name}**")
                 for q in questions:
-                    st.markdown(f"- {q}")
+                    st.write(f"- {q}")
+    else:
+        st.warning("Please upload both job description and resumes.")
