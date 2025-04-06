@@ -17,7 +17,7 @@ Job Description:
 Return the questions in bullet point format.
 """
 
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3, google_api_key=api_key)
     response = model.generate_content(prompt)
 
     return response.text
