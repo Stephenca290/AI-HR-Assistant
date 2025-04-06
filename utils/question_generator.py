@@ -1,20 +1,20 @@
-import google.generativeai as genai
-import os
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
-# Set your Gemini API key in environment variable
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+def generate_hr_questions(resume_text, api_key):
+    prompt = PromptTemplate(
+        input_variables=["resume"],
+        template="""
+You are an expert HR professional. Based on the resume below, generate 5 unique HR interview questions
+that assess behavioral, situational, and communication skills. Avoid technical or domain-specific questions.
 
-model = genai.GenerativeModel("gemini-pro")
+Resume:
+{resume}
 
-def generate_hr_questions(resume_text):
-    prompt = f"""
-    You are an HR assistant. Read this resume and generate 3 smart HR interview questions based on the candidate's skills, experience, and projects.
-    
-    Resume:
-    {resume_text[:1000]}
-    """
-    try:
-        response = model.generate_content(prompt)
-        return response.text.strip().split('\n')
-    except Exception as e:
-        return [f"Error generating questions: {e}"]
+Questions:"""
+    )
+    llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.4, google_api_key=api_key)
+    chain = LLMChain(llm=llm, prompt=prompt)
+    result = chain.run(resume=resume_text)
+    return result.strip().split("\n")[:5]
