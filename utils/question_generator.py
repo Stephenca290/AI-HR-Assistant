@@ -17,7 +17,7 @@ Job Description:
 Return the questions in bullet point format.
 """
 
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(prompt)
 
     return response.text
