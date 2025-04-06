@@ -3,3 +3,4 @@ chromadb
 PyMuPDF
 streamlit
 tqdm
+pysqlite3-binary
