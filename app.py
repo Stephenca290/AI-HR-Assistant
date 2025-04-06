@@ -6,11 +6,7 @@ from utils import pdf_utils, embedding_utils, chromadb_utils, llm_utils
 st.set_page_config(page_title="AI HR Assistant", layout="wide")
 st.title("🤖 AI HR Assistant")
 
-import tempfile
 
-with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
-    tmp.write(file.read())
-    save_path = tmp.name
 
 uploaded_files = st.file_uploader("Upload Resumes (PDFs)", type=["pdf"], accept_multiple_files=True)
 job_description = st.text_area("Enter Job Description")
