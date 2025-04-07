@@ -6,7 +6,7 @@ def generate_hr_questions(resume_text, job_description, api_key):
     prompt = f"""
 You are an AI HR Assistant.
 
-Generate 5 personalized HR interview questions based on the following resume and job description.
+Generate 4 personalized HR interview questions based on the following resume and job description.
 
 Resume:
 {resume_text}
