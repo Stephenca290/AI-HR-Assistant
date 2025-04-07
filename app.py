@@ -12,7 +12,6 @@ st.sidebar.header("Input Job Description and Upload Resumes")
 
 api_key = st.secrets["api_key"]
 
-# ⬇️ Changed from file upload to text input
 job_description_text = st.sidebar.text_area("Paste Job Description Text Here", height=200)
 
 resume_files = st.sidebar.file_uploader("Upload Resumes (PDF)", type=["pdf"], accept_multiple_files=True)
