@@ -8,17 +8,19 @@ st.set_page_config(page_title="AI-Powered HR Assistant", layout="wide")
 
 st.title("🤖 AI-Powered HR Assistant")
 
-st.sidebar.header("Upload Job Description and Resumes")
+st.sidebar.header("Input Job Description and Upload Resumes")
 
 api_key = st.secrets["api_key"]
 
-job_description_file = st.sidebar.file_uploader("Upload Job Description (PDF)", type=["pdf"])
+# ⬇️ Changed from file upload to text input
+job_description_text = st.sidebar.text_area("Paste Job Description Text Here", height=200)
+
 resume_files = st.sidebar.file_uploader("Upload Resumes (PDF)", type=["pdf"], accept_multiple_files=True)
 
 if st.sidebar.button("Analyze"):
-    if job_description_file and resume_files:
+    if job_description_text and resume_files:
         with st.spinner("Processing..."):
-            jd_text = extract_text_from_pdf(job_description_file)
+            jd_text = job_description_text.strip()
             resumes_texts = [extract_text_from_pdf(resume) for resume in resume_files]
             resume_names = [resume.name for resume in resume_files]
 
@@ -42,4 +44,4 @@ if st.sidebar.button("Analyze"):
                 for q in questions:
                     st.write(f"- {q}")
     else:
-        st.warning("Please upload both job description and resumes.")
+        st.warning("Please provide both the job description and resumes.")
